@@ -1,0 +1,15 @@
+body {
+    background-color: #0d3662; /* Blue background */
+    color: white; /* White text for better contrast */
+}
+.container {
+    background-color: rgba(255, 255, 255, 0.559); /* Semi-transparent white background */
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 50px;
+    color: #ebebeb; /* Black text for the form */
+}
+
+.form-label {
+    color: #000000; /* Black text for labels */
+}
