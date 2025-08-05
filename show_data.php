@@ -32,17 +32,6 @@ if (isset($_GET['hh_id'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Beneficiary Verification System</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        /* Custom styles for member status */
-        .status-active {
-            color: green;
-            font-weight: bold;
-        }
-        .status-moved-out {
-            color: red;
-            font-weight: bold;
-        }
-    </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script>
         $(document).ready(function() {
