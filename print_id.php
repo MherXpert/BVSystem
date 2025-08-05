@@ -1,96 +1,106 @@
-<?php include 'db.php'; ?>
+<?php
+// Database connection
+$conn = mysqli_connect("localhost", "root", "", "barcode") or die("Connection failed: " . mysqli_connect_error());
+
+// Fetch data if hh_id is provided
+$row = null;
+if (!empty($_GET['hh_id'])) {
+    $hh_id = trim($_GET['hh_id']);
+    $stmt = $conn->prepare("SELECT * FROM barcode_data_2 WHERE hh_id = ?");
+    $stmt->bind_param("s", $hh_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    $stmt->close();
+}
+$conn->close();
+?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pantawid ID System</title>
+    <title>Search Household</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        .id-card {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            border: 1px solid #ccc;
+            padding: 20px;
+            background-color: white;
+        }
+        @media print {
+            body * { visibility: hidden; }
+            #id-card, #id-card * { visibility: visible; }
+            #id-card { position: absolute; left: 0; top: 0; }
+        }
+    </style>
 </head>
-<body>
-    <div class="container mt-5">
-        <h1 class="text-center mb-4">Search Household</h1>
-        
-        <div class="card shadow">
-            <div class="card-body">
-                <form method="GET" action="">
-                    <div class="row">
-                        <div class="col-md-8">
-                            <input type="text" name="household_id" class="form-control" 
-                                   placeholder="Enter Household ID" required>
-                        </div>
-                        <div class="col-md-4">
-                            <button type="submit" class="btn btn-primary w-100">Search</button>
-                        </div>
-                    </div>
-                </form>
+<body class="bg-light">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h1 class="text-center mb-4">Search Household</h1>
                 
-                <?php
-                if (isset($_GET['hh_id'])) {
-                    $household_id = $conn->real_escape_string($_GET['hh_id']);
-                    $query = "SELECT * FROM barcode_data_2 WHERE hh_id = ?";
-                    $result = $conn->query($sql);
-                    
-                    if ($result->num_rows > 0) {
-                        $row = $result->fetch_assoc();
-                        ?>
-                        <div class="mt-4">
-                            <button onclick="printID()" class="btn btn-success mb-3">Print ID</button>
-                            <div id="id-card" class="id-card">
-                                <div class="id-header">
-                                    <h5>Republic of the Philippines</h5>
-                                    <p>Department of Social Welfare and Development Field Office XI</p>
+                <div class="card shadow mb-4">
+                    <div class="card-body">
+                        <form method="GET" class="row g-2">
+                            <div class="col-md-8">
+                                <input type="text" name="hh_id" value="<?= htmlspecialchars($_GET['hh_id'] ?? '') ?>" 
+                                    class="form-control" placeholder="Enter Household ID" autofocus>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="submit" class="btn btn-primary w-100">Search</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <?php if (!empty($_GET['hh_id'])): ?>
+                    <?php if ($row): ?>
+                        <div class="text-center mb-3">
+                            <button onclick="window.print()" class="btn btn-success">Print ID</button>
+                        </div>
+                        <div id="id-card" class="id-card">
+                            <div class="text-center mb-3">
+                                <h5>Republic of the Philippines</h5>
+                                <p>Department of Social Welfare and Development Field Office XI</p>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <p><strong>Name:</strong> <?= htmlspecialchars($row['first_name']) ?></p>
+                                <p><strong>Address:</strong> <?= htmlspecialchars($row['municipality']) ?></p>
+                                <p><strong>Household ID:</strong> <?= htmlspecialchars($row['hh_id']) ?></p>
+                                <p><strong>Set Group:</strong> <?= htmlspecialchars($row['entry_id']) ?></p>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between">
+                                <div class="text-center">
+                                    <p class="border-top pt-5">signature/thumbmark</p>
+                                    <p>Rev T. Gatchalian</p>
+                                    <p>DSWD Secretary</p>
                                 </div>
-                                
-                                <div class="id-body">
-                                    <p><strong>Name:</strong> <?php echo $row['name']; ?></p>
-                                    <p><strong>Household address:</strong> <?php echo $row['address']; ?></p>
-                                    <p><strong>Household ID #:</strong> <?php echo $row['household_id']; ?></p>
-                                    <p><strong>Household Set Group:</strong> <?php echo $row['set_group']; ?></p>
-                                </div>
-                                
-                                <div class="id-footer">
-                                    <div class="signature">
-                                        <p>signature/thumbmark</p>
-                                        <p>Rev T. Gatchalian</p>
-                                        <p>DSWD Secretary</p>
-                                    </div>
-                                    
-                                    <div class="dates">
-                                        <p><strong>Issued on:</strong> <?php echo date('m/d/Y', strtotime($row['issued_date'])); ?></p>
-                                        <p><strong>Valid until:</strong> <?php echo date('m/d/Y', strtotime($row['valid_until'])); ?></p>
-                                    </div>
-                                </div>
-                                
-                                <div class="id-note">
-                                    <p>In case of loss, please return to the nearest 4Ps office.</p>
+                                <div>
+                                    <p><strong>Issued:</strong> <?= date('m/d/Y') ?></p>
+                                    <p><strong>Valid until:</strong> <?= date('m/d/Y', strtotime('+3 years')) ?></p>
                                 </div>
                             </div>
+                            
+                            <p class="text-center mt-3 text-muted small">
+                                In case of loss, please return to the nearest 4Ps office.
+                            </p>
                         </div>
-                        <?php
-                    } else {
-                        echo '<div class="alert alert-danger mt-3">Household ID not found</div>';
-                    }
-                }
-                ?>
+                    <?php else: ?>
+                        <div class="alert alert-danger">Household ID not found</div>
+                    <?php endif; ?>
+                <?php endif; ?>
             </div>
         </div>
     </div>
 
-    <script>
-    function printID() {
-        var printContents = document.getElementById('id-card').innerHTML;
-        var originalContents = document.body.innerHTML;
-        
-        document.body.innerHTML = printContents;
-        window.print();
-        document.body.innerHTML = originalContents;
-        window.location.reload();
-    }
-    </script>
-    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
