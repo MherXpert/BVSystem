@@ -42,12 +42,12 @@
                         <form method="POST" action="server.php">
                             <div class="form-group row g-3">
                                 <label for="">Email Address</label>
-                                <input type="email" id="email_address" name="email" class="form-control shadow-sm" placeholder="Enter Email..." required autofocus id="email_address">
+                                <input type="email" id="email_address" name="email" class="form-control shadow-sm" autocomplete="off" placeholder="Enter Email..." required autofocus id="email_address">
                             </div>
 
                             <div class="form-group mt-4 row g-1">
                                 <label for="">Password</label>
-                                <input type="password" name="password" class="form-control shadow-sm" placeholder="Enter Password..." required>
+                                <input type="password" name="password" class="form-control shadow-sm" autocomplete="off" placeholder="Enter Password..." required>
                             </div>
                             
                             <div class="form-group">

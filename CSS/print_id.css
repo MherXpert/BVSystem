@@ -1,92 +1,108 @@
-body {
-    background-color: #f8f9fa;
-    font-family: Arial, sans-serif;
-}
 
-.centered-container {
-            height: 100vh;
-}
-
-.id-card {
-    width: 90%;
-    max-width: 500px;
-    margin: 0 auto;
-    border: 1px solid #ccc;
-    padding: 20px;
-    background-color: white;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-
-.id-header {
-    text-align: center;
-    margin-bottom: 20px;
-    border-bottom: 2px solid #003366;
-    padding-bottom: 10px;
-}
-
-.id-header h5 {
-    color: #003366;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.id-header p {
-    color: #333;
-    margin-bottom: 0;
-}
-
-.id-body p {
-    margin-bottom: 15px;
-    padding-bottom: 5px;
-    border-bottom: 1px dashed #ddd;
-}
-
-.id-footer {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 30px;
-    margin-bottom: 20px;
-}
-
-.signature {
-    text-align: center;
-    width: 40%;
-}
-
-.signature p:first-child {
-    border-top: 1px solid #000;
-    padding-top: 50px;
-    margin-bottom: 30px;
-}
-
-.dates {
-    width: 50%;
-}
-
-.id-note {
-    font-size: 0.8em;
-    text-align: center;
-    color: #666;
-    margin-top: 20px;
-}
-
-@media print {
-    body * {
-        visibility: hidden;
-    }
-    #id-card, #id-card * {
-        visibility: visible;
-    }
-    #id-card {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        max-width: 100%;
-        border: none;
-        box-shadow: none;
-    }
-    .no-print {
-        display: none !important;
-    }
-}
+        /* ID Card Styling */
+        .id-card-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        
+        .id-card {
+            width: 85.6mm;
+            height: 54mm;
+            padding: 3mm;
+            border: 1px solid #000;
+            font-family: Arial, sans-serif;
+            background: white;
+            position: relative;
+        }
+        
+        .id-header {
+            text-align: center;
+            margin-bottom: 2mm;
+        }
+        
+        .id-title {
+            font-size: 6pt;
+            line-height: 1.2;
+        }
+        
+        .id-subtitle {
+            font-size: 5.5pt;
+            font-weight: bold;
+            line-height: 1.2;
+        }
+        
+        .id-divider {
+            border-top: 1px solid #000;
+            margin: 2mm 0;
+        }
+        
+        .id-details, .id-validity {
+            font-size: 6pt;
+        }
+        
+        .id-row {
+            margin-bottom: 1mm;
+            display: flex;
+        }
+        
+        .id-label {
+            font-weight: bold;
+            width: 28mm;
+            display: inline-block;
+        }
+        
+        .id-value {
+            border-bottom: 1px solid #000;
+            flex-grow: 1;
+            padding-bottom: 1px;
+            min-height: 5mm;
+        }
+        
+        .id-signature {
+            font-size: 5pt;
+            text-align: center;
+            margin-top: 1mm;
+        }
+        
+        .id-signature-line {
+            border-top: 1px solid #000;
+            width: 40mm;
+            margin: 0 auto 1mm;
+            padding-top: 1mm;
+        }
+        
+        .id-secretary {
+            font-weight: bold;
+            font-size: 5.5pt;
+        }
+        
+        .id-secretary-title {
+            font-size: 5pt;
+        }
+        
+        .id-note {
+            font-size: 4pt;
+            text-align: center;
+            margin-top: 2mm;
+            font-style: italic;
+        }
+        
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .id-card-container, .id-card-container * {
+                visibility: visible;
+            }
+            .id-card {
+                position: absolute;
+                left: 0;
+                top: 0;
+                margin: 0;
+                border: none;
+            }
+            .btn {
+                display: none !important;
+            }
+        }

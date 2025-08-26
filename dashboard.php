@@ -34,7 +34,7 @@ if (isset($_SESSION['login_message']))
             <br>
             <a href="update_database.php" class="text-muted">UPDATE DATABASE</a>
             <br>
-            <a href="#" class="text-muted">PRINT ID</a>
+            <a href="print_id.php" class="text-muted">PRINT ID</a>
             </div>
         </div>
         
