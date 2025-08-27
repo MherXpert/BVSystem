@@ -1,7 +1,7 @@
 <?php
 // LOG IN CONNECTION
 session_start();
-include require_once '../app/db.php';
+require_once '../app/db.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
