@@ -22,6 +22,7 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Household</title>
+    <link rel="stylesheet" href="CSS/print_id.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .id-card {
@@ -39,6 +40,7 @@ $conn->close();
         }
     </style>
 </head>
+  
 <body class="bg-light">
     <div class="container py-5">
         <div class="row justify-content-center">
@@ -62,36 +64,65 @@ $conn->close();
                 <?php if (!empty($_GET['hh_id'])): ?>
                     <?php if ($row): ?>
                         <div class="text-center mb-3">
-                            <button onclick="window.print()" class="btn btn-success">Print ID</button>
+                          
+                            <button onclick="printID()" class="btn btn-success">Print ID</button>
                         </div>
-                        <div id="id-card" class="id-card">
-                            <div class="text-center mb-3">
-                                <h5>Republic of the Philippines</h5>
-                                <p>Department of Social Welfare and Development Field Office XI</p>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <p><strong>Name:</strong> <?= htmlspecialchars($row['first_name']) ?></p>
-                                <p><strong>Address:</strong> <?= htmlspecialchars($row['municipality']) ?></p>
-                                <p><strong>Household ID:</strong> <?= htmlspecialchars($row['hh_id']) ?></p>
-                                <p><strong>Set Group:</strong> <?= htmlspecialchars($row['entry_id']) ?></p>
-                            </div>
-                            
-                            <div class="d-flex justify-content-between">
-                                <div class="text-center">
-                                    <p class="border-top pt-5">signature/thumbmark</p>
-                                    <p>Rev T. Gatchalian</p>
-                                    <p>DSWD Secretary</p>
+                        
+                        <!-- ID Card Container -->
+                        <div id="id-card" class="id-card-container">
+                            <div class="id-card">
+                                <div class="id-header">
+                                    <div class="id-title">Republic of the Philippines</div>
+                                    <div class="id-subtitle">Department of Social Welfare and Development Field Office XI</div>
                                 </div>
-                                <div>
-                                    <p><strong>Issued:</strong> <?= date('m/d/Y') ?></p>
-                                    <p><strong>Valid until:</strong> <?= date('m/d/Y', strtotime('+3 years')) ?></p>
+                                
+                                <div class="id-divider"></div>
+                                
+                                <div class="id-details">
+                                    <div class="id-row">
+                                        <span class="id-label">Name:</span>
+                                        <span class="id-value"><?= htmlspecialchars($row['first_name'] . ' ' . $row['last_name']) ?></span>
+                                    </div>
+                                    <div class="id-row">
+                                        <span class="id-label">Household address:</span>
+                                        <span class="id-value"><?= htmlspecialchars($row['municipality'] . ', ' . $row['province']) ?></span>
+                                    </div>
+                                    <div class="id-row">
+                                        <span class="id-label">Household ID #:</span>
+                                        <span class="id-value"><?= htmlspecialchars($row['hh_id']) ?></span>
+                                    </div>
+                                    <div class="id-row">
+                                        <span class="id-label">Household Set Group:</span>
+                                        <span class="id-value"><?= htmlspecialchars($row['entry_id']) ?></span>
+                                    </div>
+                                </div>
+                                
+                                <div class="id-divider"></div>
+                                
+                                <div class="id-signature">
+                                    <div class="id-signature-line">signature/thumbmark</div>
+                                    <div class="id-secretary">Rev T. Gatchalian</div>
+                                    <div class="id-secretary-title">DSWD Secretary</div>
+                                </div>
+                                
+                                <div class="id-divider"></div>
+                                
+                                <div class="id-validity">
+                                    <div class="id-row">
+                                        <span class="id-label">Issued on:</span>
+                                        <span class="id-value"><?= date('m/d/Y') ?></span>
+                                    </div>
+                                    <div class="id-row">
+                                        <span class="id-label">Valid until:</span>
+                                        <span class="id-value"><?= date('m/d/Y', strtotime('+1 year')) ?></span>
+                                    </div>
+                                </div>
+                                
+                                <div class="id-note">
+                                    In case of loss, please return to the nearest 4Ps office.
                                 </div>
                             </div>
-                            
-                            <p class="text-center mt-3 text-muted small">
-                                In case of loss, please return to the nearest 4Ps office.
-                            </p>
+
                         </div>
                     <?php else: ?>
                         <div class="alert alert-danger">Household ID not found</div>
@@ -101,6 +132,11 @@ $conn->close();
         </div>
     </div>
 
+    <script>
+        function printID() {
+            window.print();
+        }
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

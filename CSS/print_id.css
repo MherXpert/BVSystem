@@ -1,0 +1,108 @@
+
+        /* ID Card Styling */
+        .id-card-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        
+        .id-card {
+            width: 85.6mm;
+            height: 54mm;
+            padding: 3mm;
+            border: 1px solid #000;
+            font-family: Arial, sans-serif;
+            background: white;
+            position: relative;
+        }
+        
+        .id-header {
+            text-align: center;
+            margin-bottom: 2mm;
+        }
+        
+        .id-title {
+            font-size: 6pt;
+            line-height: 1.2;
+        }
+        
+        .id-subtitle {
+            font-size: 5.5pt;
+            font-weight: bold;
+            line-height: 1.2;
+        }
+        
+        .id-divider {
+            border-top: 1px solid #000;
+            margin: 2mm 0;
+        }
+        
+        .id-details, .id-validity {
+            font-size: 6pt;
+        }
+        
+        .id-row {
+            margin-bottom: 1mm;
+            display: flex;
+        }
+        
+        .id-label {
+            font-weight: bold;
+            width: 28mm;
+            display: inline-block;
+        }
+        
+        .id-value {
+            border-bottom: 1px solid #000;
+            flex-grow: 1;
+            padding-bottom: 1px;
+            min-height: 5mm;
+        }
+        
+        .id-signature {
+            font-size: 5pt;
+            text-align: center;
+            margin-top: 1mm;
+        }
+        
+        .id-signature-line {
+            border-top: 1px solid #000;
+            width: 40mm;
+            margin: 0 auto 1mm;
+            padding-top: 1mm;
+        }
+        
+        .id-secretary {
+            font-weight: bold;
+            font-size: 5.5pt;
+        }
+        
+        .id-secretary-title {
+            font-size: 5pt;
+        }
+        
+        .id-note {
+            font-size: 4pt;
+            text-align: center;
+            margin-top: 2mm;
+            font-style: italic;
+        }
+        
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .id-card-container, .id-card-container * {
+                visibility: visible;
+            }
+            .id-card {
+                position: absolute;
+                left: 0;
+                top: 0;
+                margin: 0;
+                border: none;
+            }
+            .btn {
+                display: none !important;
+            }
+        }
