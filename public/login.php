@@ -11,9 +11,9 @@
     <div class="container">
         <br>
         <div class="row">
-            <img src="public/Pictures/bagong pilipinas.png" style="max-width:8%;" alt="logo">
-            <img src="public/Pictures/dswd logo.png" style="max-width:200px;" alt="logo">
-            <img src="public/Pictures/pantawid logo.png" style="max-width:8%;" alt="logo">
+            <img src="Pictures/bagong pilipinas.png" style="max-width:8%;" alt="logo">
+            <img src="Pictures/dswd logo.png" style="max-width:200px;" alt="logo">
+            <img src="Pictures/pantawid logo.png" style="max-width:8%;" alt="logo">
         </div>
     </div>
 

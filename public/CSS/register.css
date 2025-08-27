@@ -1,9 +1,9 @@
 body {
     background-color: #007bff; /* Blue background */
-    color: white; /* White text for better contrast */
+    color: rgb(255, 255, 255); /* White text for better contrast */
 }
 .container {
-    background-color: rgba(25, 255, 255, 0.9); /* Semi-transparent white background */
+    background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
     padding: 10px;
     border-radius: 10px;
     margin-top: 10px;
