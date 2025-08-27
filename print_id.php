@@ -40,7 +40,7 @@ $conn->close();
         }
     </style>
 </head>
-
+  
 <body class="bg-light">
     <div class="container py-5">
         <div class="row justify-content-center">
@@ -64,6 +64,7 @@ $conn->close();
                 <?php if (!empty($_GET['hh_id'])): ?>
                     <?php if ($row): ?>
                         <div class="text-center mb-3">
+                          
                             <button onclick="printID()" class="btn btn-success">Print ID</button>
                         </div>
                         
@@ -121,6 +122,7 @@ $conn->close();
                                     In case of loss, please return to the nearest 4Ps office.
                                 </div>
                             </div>
+
                         </div>
                     <?php else: ?>
                         <div class="alert alert-danger">Household ID not found</div>
@@ -129,10 +131,12 @@ $conn->close();
             </div>
         </div>
     </div>
+
     <script>
         function printID() {
             window.print();
         }
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
