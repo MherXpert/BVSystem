@@ -19,7 +19,7 @@
                 
                     <div class="container card-body">
 
-                        <form action="send_to_email.php" method="POST">
+                        <form action="../app/send_to_email.php" method="POST">
                             <div class="form-group mb-3">
                             <label for="username">Username</label>
                             <input type="text" name="nameuser" class="form-control"placeholder="Username..." required>
