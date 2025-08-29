@@ -21,7 +21,7 @@
                 
                     <div class="card-body">
 
-                        <form action="verifysuccessful.php" method="POST">
+                        <form action="../public/verifysuccessful.php" method="POST">
                             <div class="form-group mb-3">
                                 <label for="verification_code">ENTER CODE TO VERIFY USER</label>
                                 <input type="text" class="form-control" id="verifiedcode" name="verifiedcode" required>

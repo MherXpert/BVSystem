@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     if (mysqli_num_rows($check_email_query_run) > 0) 
     {
         //$_SESSION['status'] = "Email Address already exists.";
-        echo "<script>alert('Email ID already exists.');window.location.href = 'register.php';</script>"; // Redirect to the registration form. alerts if the email already exist.
+        echo "<script>alert('Email ID already exists.');window.location.href = '../public/register.php';</script>"; // Redirect to the registration form. alerts if the email already exist.
         exit();
     } 
     else 
@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
             $message = "EMAIL ADDRESS: $email \nUSERNAME: $nameuser\nVERIFICATION CODE = $verification_code";
             mail($admin_email, $subject, $message);
 
-            include 'verification_code.php';
+            include '../public/verification_code.php';
         } 
         else 
         {

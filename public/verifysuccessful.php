@@ -2,7 +2,7 @@
 //VERIFICATION OF EMAIL CODE
 
 session_start();
-include 'db.php';
+require_once '../app/db.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $verification_code = $_POST['verifiedcode'];
