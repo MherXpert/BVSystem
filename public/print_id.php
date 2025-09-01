@@ -131,7 +131,7 @@ $conn->close();
             </div>
         </div>
     </div>
-
+    <a href="dashboard.php" class="btn btn-warning">Back</a>
     <script>
         function printID() {
             window.print();
