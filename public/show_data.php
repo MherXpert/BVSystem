@@ -137,6 +137,7 @@ if (isset($_GET['hh_id'])) {
         <!-- Logout Button and Modal -->
         <div class="container mt-3">
             <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#logoutModal">Logout</button>
+            <a href="dashboard.php" class="btn btn-warning">Back</a>
         </div>
 
         <!-- Logout Confirmation Modal -->
@@ -153,6 +154,7 @@ if (isset($_GET['hh_id'])) {
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                         <a href="log_out.php" class="btn btn-danger">Logout</a>
+
                     </div>
                 </div>
             </div>

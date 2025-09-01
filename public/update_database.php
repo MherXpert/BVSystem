@@ -186,8 +186,6 @@ if (isset($_FILES['report']) && $_FILES['report']['error'] == UPLOAD_ERR_OK)
 
 } else 
 {
-    // Display the upload form (HTML remains the same)
-    // ... your HTML form code here ...
 echo'
 <!DOCTYPE html>
 <html lang="en">
@@ -212,14 +210,15 @@ echo'
                                 <input class="form-control" type="file" name="report" id="report" accept=".csv" required>
                             </div>
                             <div class="d-grid gap-2 col-6 mx-auto">
-                                    <button class="btn btn-primary mt-2" type="submit">Upload file
-                            </button>
-                                
+                                    <button class="btn btn-outline-success mt-2" type="submit">Upload file</button> 
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
+        </div>
+        <div>
+            <a href="dashboard.php" class="btn btn-warning">Back</a>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
