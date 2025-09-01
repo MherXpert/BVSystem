@@ -1,15 +1,37 @@
-body {
-    background-color: #0d3662; /* Blue background */
-    color: white; /* White text for better contrast */
+
+h1{
+    color:#ffffff;
 }
-.container {
-    background-color: rgba(255, 255, 255, 0.559); /* Semi-transparent white background */
-    padding: 20px;
-    border-radius: 10px;
-    margin-top: 50px;
-    color: #ebebeb; /* Black text for the form */
+.form-label {
+    color: #ffffff; /* Black text for labels */
 }
 
-.form-label {
-    color: #000000; /* Black text for labels */
+body {
+    position: relative; /* Needed for absolute positioning of the background image */
+    min-height: 100vh; /* Ensure body takes full viewport height */
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* Prevent horizontal scroll */
 }
+
+.background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../Pictures/community_water.png'); /* Adjust path if needed */
+    background-size: cover;
+    background-position: center;
+    opacity: 0.5; /* opacity */
+    z-index: -1; /* Place it behind other content */
+}
+
+/* Ensure content is visible above the background */
+.z-index-1 {
+    z-index: 1;
+}
+
+
+
+
