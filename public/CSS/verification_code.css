@@ -1,0 +1,128 @@
+/* verification.css */
+:root {
+    --primary-color: #3a57e8;
+    --secondary-color: #f8f9fa;
+    --accent-color: #6c757d;
+    --text-color: #212529;
+}
+
+body {
+    background-color: #f5f7fb;
+    color: var(--text-color);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 20px 0;
+}
+
+.verification-container {
+    max-width: 450px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.verification-card {
+    background-color: white;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    border: none;
+}
+
+.verification-title {
+    color: var(--primary-color);
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+    text-transform: uppercase;
+}
+
+.verification-message {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #666;
+}
+
+.verification-message p {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.form-label {
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #444;
+    display: block;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+}
+
+.form-control {
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(58, 87, 232, 0.25);
+}
+
+.btn-verify {
+    background-color: var(--primary-color);
+    color: white;
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 500;
+    margin-top: 10px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-back {
+    background-color: var(--accent-color);
+    color: white;
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 500;
+    margin-top: 15px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-verify:hover {
+    background-color: #2a46d7;
+}
+
+.btn-back:hover {
+    background-color: #5a6268;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+    .verification-card {
+        padding: 20px;
+    }
+    
+    .verification-title {
+        font-size: 1.5rem;
+    }
+    
+    .form-control {
+        font-size: 1rem;
+    }
+}
