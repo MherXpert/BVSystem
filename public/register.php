@@ -3,47 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="public/CSS/register.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <title>Register</title>
+    <title>User Registration</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="CSS/register.css">
 </head>
 <body>
-    <div class="container mt-5 text-muted ">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card shadow">
-                  <div class="card-header bg-dark">
-                    <h5 class="row justify-content-center text-white">Register User</h5>
-                  </div>
-                     
-                
-                    <div class="container card-body">
-
-                        <form action="../app/send_to_email.php" method="POST">
-                            <div class="form-group mb-3">
-                            <label for="username">Username</label>
-                            <input type="text" name="nameuser" class="form-control"placeholder="Username..." required>
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="email">Email</label>
-                                <input type="Email" name="email" class="form-control"placeholder="Email..." required>
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="password">Password</label>
-                                <input type="password" name="password" class="form-control" placeholder="Password..." required>
-                            </div>
-                            <div class="form-group mb-2 mt-2">
-                                <button type="submit" name ="register" class="btn btn-primary">Register</button>
-                                <a href="login.php" class="btn btn-outline-danger">Back</a>
-                            </div>
-                        </form>
-                    </div>
-                  </div>
+    <div class="register-container">
+        <div class="register-card">
+            <h2 class="register-title">Register User</h2>
+            
+            <form action="../app/send_to_email.php" method="POST">
+                <div class="form-group">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" class="form-control" name="nameuser" placeholder="Username..." required>
                 </div>
-            </div>
+                
+                <div class="form-group">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" name="email" placeholder="Email..." required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" name="password" placeholder="Password..." required>
+                </div>
+                
+                <button type="submit" class="btn-register">Register</button>
+                <a href="login.php" class="btn btn-back">Back</a>
+
+            </form>
         </div>
-           
-        </form>
-    </div><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
