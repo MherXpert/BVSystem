@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
             $_SESSION['nameuser'] = "SuperAdmin"; // Set a specific session variable for the SuperAdmin
             echo "<script type='text/javascript'>
                     alert('Welcome, SuperAdmin!');
-                    window.location.href = 'dashboard.php';
+                    window.location.href = 'admin_dashboard.php';
                 </script>";
             exit();
         }
