@@ -19,6 +19,7 @@ if (isset($_SESSION['login_message']))
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="CSS/dashboard.css">
     <title>Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -46,7 +47,7 @@ if (isset($_SESSION['login_message']))
                             </div>
                             <h3>SCAN QR CODE</h3>
                             <p class="text-muted">Scan QR codes to process information and view records</p>
-                                <a href="show_data.php" class="btn btn-outline-primary">SCAN QR CODE</a>
+                                <a href="admin_show_data.php" class="btn btn-outline-primary">SCAN QR CODE</a>
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -56,7 +57,7 @@ if (isset($_SESSION['login_message']))
                             </div>
                             <h3>UPDATE DATABASE</h3>
                             <p class="text-muted">Manage and update records in the system database</p>
-                            <a href="update_database.php" class="btn btn-outline-primary mt-3">Update Database</a>
+                            <a href="admin_update_database.php" class="btn btn-outline-primary mt-3">Update Database</a>
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -66,7 +67,7 @@ if (isset($_SESSION['login_message']))
                             </div>
                             <h3>PRINT ID</h3>
                             <p class="text-muted">Generate and print identification cards</p>
-                            <a href="print_id.php" class="btn btn-outline-primary mt-3">Print ID</a>
+                            <a href="admin_print_id.php" class="btn btn-outline-primary mt-3">Print ID</a>
                         </div>
                     </div>
                 </div>

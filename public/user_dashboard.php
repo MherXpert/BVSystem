@@ -48,7 +48,7 @@ if (isset($_SESSION['login_message']))
                             </div>
                             <h3>SCAN QR CODE</h3>
                             <p class="text-muted">Scan QR codes to process information and view records</p>
-                            <a href="show_data.php" class="btn btn-outline-primary">SCAN QR CODE</a>
+                            <a href="user_show_data.php" class="btn btn-outline-primary">SCAN QR CODE</a>
                         </div>
                     </div>
                     
@@ -60,7 +60,7 @@ if (isset($_SESSION['login_message']))
                             </div>
                             <h3>PRINT ID</h3>
                             <p class="text-muted">Generate and print identification cards</p>
-                            <a href="print_id.php" class="btn btn-outline-primary">Print ID</a>
+                            <a href="user_print_id.php" class="btn btn-outline-primary">Print ID</a>
                         </div>
                     </div>
                 </div>
