@@ -9,14 +9,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     $password = $_POST['password'];
 
     // --- SuperAdmin Check ---
-    $superAdminEmail = "Admindswd@gmail.com";
+    $superAdminEmail = "Dswdadmin@gmail.com";
     $superAdminPassword = "@dmin413";
 
     if ($email === $superAdminEmail && $password === $superAdminPassword) 
         {
-            $_SESSION['nameuser'] = "SuperAdmin"; // Set a specific session variable for the SuperAdmin
+            $_SESSION['nameuser'] = "Admin"; // Set a specific session variable for the SuperAdmin
             echo "<script type='text/javascript'>
-                    alert('Welcome, SuperAdmin!');
+                    alert('Successfully logged as Admin.');
                     window.location.href = 'admin_dashboard.php';
                 </script>";
             exit();
@@ -43,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                         {
                         $_SESSION['nameuser'] = $row['nameuser'];
                         echo "<script type='text/javascript'>
-                                alert('Successfully Logged-in');
+                                alert('Successfully logged-in.');
                                 window.location.href = 'user_dashboard.php';
                             </script>";
                         exit();

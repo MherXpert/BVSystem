@@ -64,7 +64,6 @@ $conn->close();
                 <?php if (!empty($_GET['hh_id'])): ?>
                     <?php if ($row): ?>
                         <div class="text-center mb-3">
-                          
                             <button onclick="printID()" class="btn btn-success">Print ID</button>
                         </div>
                         

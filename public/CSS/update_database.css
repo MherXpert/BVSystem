@@ -1,0 +1,153 @@
+/* upload.css */
+:root {
+    --primary-color: #3a57e8;
+    --secondary-color: #f8f9fa;
+    --accent-color: #6c757d;
+    --text-color: #212529;
+}
+
+body {
+    background-color: #f5f7fb;
+    color: var(--text-color);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 20px 0;
+}
+
+.upload-container {
+    max-width: 500px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.upload-card {
+    background-color: white;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    border: none;
+}
+
+.upload-title {
+    color: var(--primary-color);
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 1.8rem;
+}
+
+.form-label {
+    font-weight: 500;
+    margin-bottom: 15px;
+    color: #444;
+    display: block;
+    font-size: 1.1rem;
+}
+
+.file-input-container {
+    position: relative;
+    margin-bottom: 25px;
+}
+
+.form-control[type="file"] {
+    position: absolute;
+    left: -9999px;
+}
+
+.file-input-label {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border: 2px dashed #ddd;
+    border-radius: 8px;
+    background-color: #fafafa;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.file-input-label:hover {
+    border-color: var(--primary-color);
+    background-color: #f0f4ff;
+}
+
+.file-input-label i {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    margin-right: 15px;
+}
+
+.file-input-text {
+    font-weight: 500;
+    color: var(--primary-color);
+}
+
+.file-name {
+    margin-left: auto;
+    color: var(--accent-color);
+    font-style: italic;
+}
+
+.btn-upload {
+    background-color: var(--primary-color);
+    color: white;
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 500;
+    margin-top: 10px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.btn-back {
+    background-color: var(--accent-color);
+    color: white;
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 500;
+    margin-top: 15px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.btn-upload:hover {
+    background-color: #2a46d7;
+}
+
+.btn-back:hover {
+    background-color: #5a6268;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+    .upload-card {
+        padding: 20px;
+    }
+    
+    .upload-title {
+        font-size: 1.5rem;
+    }
+    
+    .file-input-label {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+    
+    .file-name {
+        margin-left: 0;
+    }
+}
