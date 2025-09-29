@@ -88,7 +88,7 @@ $conn->close();
         .entry-id {
             position: absolute;
             bottom: 99px;
-            right: 79px;
+            right: 73px;
             font-size: 13px;
         }
 
