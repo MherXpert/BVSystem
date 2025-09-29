@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="CSS/login.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" 
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <title>Login</title>
 </head>
 <body class="bg-light">
@@ -41,13 +43,31 @@
                         <form method="POST" action="server.php">
                             <div class="form-group row g-3">
                                 <label for="">Email Address</label>
-                                <input type="email" id="email_address" name="email" class="form-control shadow-sm" autocomplete="off" placeholder="Enter Email..." required autofocus id="email_address">
+                                <input type="email" id="email_address" name="email" class="form-control shadow-sm" placeholder="Enter Email..." required autofocus id="email_address">
                             </div>
 
                             <div class="form-group mt-4 row g-1">
-                                <label for="">Password</label>
-                                <input type="password" name="password" class="form-control shadow-sm" autocomplete="off" placeholder="Enter Password..." required>
-                            </div>
+                                    <label for="">Password</label>
+                                    <div class="position-relative">
+                                        <input type="password" name="password" class="form-control shadow-sm" autocomplete="off" placeholder="Enter Password..." id="UserPass" required>
+                                        <span toggle="#UserPass" class="fa fa-fw fa-eye field-icon toggle-password position-absolute" style="right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer;"></span>
+                                    </div>
+                                </div>
+
+                                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                                <script>
+                                    $(document).ready(function() {
+                                        $(".toggle-password").click(function() {
+                                            $(this).toggleClass("fa-eye fa-eye-slash");
+                                            var input = $($(this).attr("toggle"));
+                                            if (input.attr("type") == "password") {
+                                                input.attr("type", "text");
+                                            } else {
+                                                input.attr("type", "password");
+                                            }
+                                        });
+                                    });
+                                </script>
                             
                             <div class="form-group">
                                 <br><button class="btn btn-outline-primary py-1"> Log-in</button>
