@@ -32,6 +32,26 @@ body {
     z-index: 1;
 }
 
+.footer {
+            background-color: #f8f9fa;
+            padding: 20px 0;
+            margin-top: 40px;
+            border-top: 1px solid #dee2e6;
+        }
+.footer-content {
+            text-align: center;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+.developer-info {
+            font-weight: bold;
+            color: #495057;
+        }
+.position-info {
+            font-style: italic;
+            color: #6c757d;
+        }
+
 
 
 
