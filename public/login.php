@@ -8,15 +8,38 @@
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <title>Login</title>
+    <style>
+        .footer {
+            background-color: #f8f9fa;
+            padding: 20px 0;
+            margin-top: 190px;
+            border-top: 1px solid #dee2e6;
+        }
+        .footer-content {
+            text-align: center;
+            color: #6c757d;
+            font-size: 0.6rem;
+        }
+        .developer-info {
+            font-weight: italic;
+            color: #495057;
+            text-muted: true;
+        }
+        .position-info {
+            font-style: italic;
+            color: #6c757d;
+        }
+    </style>
 </head>
 <body class="bg-light">
-        <div class="background-image"></div> <div class="container position-relative z-index-1"> <br>
-            <div class="row">
-                <img src="Pictures/bagong pilipinas.png" style="max-width:8%;" alt="logo">
-                <img src="Pictures/dswd logo.png" style="max-width:200px;" alt="logo">
-                <img src="Pictures/pantawid logo.png" style="max-width:8%;" alt="logo">
-            </div>
+    <div class="background-image"></div> 
+    <div class="container position-relative z-index-1"> <br>
+        <div class="row">
+            <img src="Pictures/bagong pilipinas.png" style="max-width:8%;" alt="logo">
+            <img src="Pictures/dswd logo.png" style="max-width:200px;" alt="logo">
+            <img src="Pictures/pantawid logo.png" style="max-width:8%;" alt="logo">
         </div>
+    </div>
 
     <div class="container mt-3">
         <div class="row justify-content-center">
@@ -47,27 +70,27 @@
                             </div>
 
                             <div class="form-group mt-4 row g-1">
-                                    <label for="">Password</label>
-                                    <div class="position-relative">
-                                        <input type="password" name="password" class="form-control shadow-sm" autocomplete="off" placeholder="Enter Password..." id="UserPass" required>
-                                        <span toggle="#UserPass" class="fa fa-fw fa-eye field-icon toggle-password position-absolute" style="right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer;"></span>
-                                    </div>
+                                <label for="">Password</label>
+                                <div class="position-relative">
+                                    <input type="password" name="password" class="form-control shadow-sm" autocomplete="off" placeholder="Enter Password..." id="UserPass" required>
+                                    <span toggle="#UserPass" class="fa fa-fw fa-eye field-icon toggle-password position-absolute" style="right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer;"></span>
                                 </div>
+                            </div>
 
-                                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                                <script>
-                                    $(document).ready(function() {
-                                        $(".toggle-password").click(function() {
-                                            $(this).toggleClass("fa-eye fa-eye-slash");
-                                            var input = $($(this).attr("toggle"));
-                                            if (input.attr("type") == "password") {
-                                                input.attr("type", "text");
-                                            } else {
-                                                input.attr("type", "password");
-                                            }
-                                        });
+                            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                            <script>
+                                $(document).ready(function() {
+                                    $(".toggle-password").click(function() {
+                                        $(this).toggleClass("fa-eye fa-eye-slash");
+                                        var input = $($(this).attr("toggle"));
+                                        if (input.attr("type") == "password") {
+                                            input.attr("type", "text");
+                                        } else {
+                                            input.attr("type", "password");
+                                        }
                                     });
-                                </script>
+                                });
+                            </script>
                             
                             <div class="form-group">
                                 <br><button class="btn btn-outline-primary py-1"> Log-in</button>
@@ -79,6 +102,23 @@
             </div>
         </div>
     </div>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="developer-info">
+                    Mher Jason C. Cabreros, CpE
+                </div>
+                <div class="position-info">
+                    Computer Maintenance Technologist II, PPPPPMD DSWD FO XI
+                </div>
+                <div class="rights-reserved mt-2">
+                    &copy; 2024 Beneficiary Verification System. All Rights Reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
