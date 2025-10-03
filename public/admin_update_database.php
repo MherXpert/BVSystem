@@ -43,19 +43,19 @@ function formatHhId($hh_id) {
     return $hh_id;
 }
 
-function checkIfExists($hh_id, $entry_id)
+function checkIfExists($hh_id, $hh_grantee)
 {
     global $conn;
     
-    if (empty($hh_id) || empty($entry_id)) return false;
+    if (empty($hh_id) || empty($hh_grantee)) return false;
     
     // Format the hh_id before checking
     $formatted_hh_id = formatHhId($hh_id);
     
-    $check_if_exists = "SELECT 1 FROM `barcode_data_2` WHERE `hh_id` = ? AND `entry_id` = ? LIMIT 1";
+    $check_if_exists = "SELECT 1 FROM `barcode_data_2` WHERE `hh_id` = ? AND `hh_grantee` = ? LIMIT 1";
     
     $stmt = mysqli_prepare($conn, $check_if_exists);
-    mysqli_stmt_bind_param($stmt, "ss", $formatted_hh_id, $entry_id);
+    mysqli_stmt_bind_param($stmt, "ss", $formatted_hh_id, $hh_grantee);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_store_result($stmt);
     
@@ -100,7 +100,7 @@ if (isset($_FILES['report']) && $_FILES['report']['error'] == UPLOAD_ERR_OK)
         "id", "province", "municipality", "first_name", "middle_name", 
         "last_name", "name_extension", "relation_to_hh_head", "sex", 
         "birthday", "age", "member_status", "barangay", "client_status", 
-        "hh_id", "entry_id"
+        "hh_id", "hh_grantee", "hh_set_group"  // Updated: entry_id -> hh_grantee + added hh_set_group
     ];
     
     // Use fopen/fgetcsv instead of SplFileObject for better reliability
@@ -120,7 +120,7 @@ if (isset($_FILES['report']) && $_FILES['report']['error'] == UPLOAD_ERR_OK)
     
     $csvHeaders = array_map('trim', $csvHeaders);
     
-    // Header validation
+    // Header validation - now expecting 17 columns
     if (count($csvHeaders) !== count($expected_headers) || !empty(array_diff($expected_headers, $csvHeaders))) 
     {
         fclose($file);
@@ -132,16 +132,22 @@ if (isset($_FILES['report']) && $_FILES['report']['error'] == UPLOAD_ERR_OK)
     }   
 
     // --- DATABASE PREPARED STATEMENTS ---
-    $insertStmt = $conn->prepare("INSERT INTO barcode_data_2 (province, municipality, first_name, middle_name, last_name, name_extension, relation_to_hh_head, sex, birthday, age, member_status, barangay, client_status, hh_id, entry_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $updateStmt = $conn->prepare("UPDATE barcode_data_2 SET province = ?, municipality = ?, first_name = ?, middle_name = ?, last_name = ?, name_extension = ?, relation_to_hh_head = ?, sex = ?, birthday = ?, age = ?, member_status = ?, barangay = ?, client_status = ? WHERE hh_id = ? AND entry_id = ?");
+    // Updated INSERT statement with hh_set_group
+    $insertStmt = $conn->prepare("INSERT INTO barcode_data_2 (province, municipality, first_name, middle_name, last_name, name_extension, relation_to_hh_head, sex, birthday, age, member_status, barangay, client_status, hh_id, hh_grantee, hh_set_group) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    
+    // Updated UPDATE statement with hh_set_group and hh_grantee
+    $updateStmt = $conn->prepare("UPDATE barcode_data_2 SET province = ?, municipality = ?, first_name = ?, middle_name = ?, last_name = ?, name_extension = ?, relation_to_hh_head = ?, sex = ?, birthday = ?, age = ?, member_status = ?, barangay = ?, client_status = ?, hh_set_group = ? WHERE hh_id = ? AND hh_grantee = ?");
     
     if (!$insertStmt || !$updateStmt) {
         fclose($file);
         die("Error preparing statements: " . $conn->error);
     }
     
-    $insertStmt->bind_param("sssssssssssssss", $province, $municipality, $first_name, $middle_name, $last_name, $name_extension, $relation_to_hh_head, $sex, $birthday, $age, $member_status, $barangay, $client_status, $hh_id, $entry_id);
-    $updateStmt->bind_param("sssssssssssssss", $province, $municipality, $first_name, $middle_name, $last_name, $name_extension, $relation_to_hh_head, $sex, $birthday, $age, $member_status, $barangay, $client_status, $hh_id, $entry_id);
+    // Bind parameters for INSERT (16 parameters now)
+    $insertStmt->bind_param("ssssssssssssssss", $province, $municipality, $first_name, $middle_name, $last_name, $name_extension, $relation_to_hh_head, $sex, $birthday, $age, $member_status, $barangay, $client_status, $hh_id, $hh_grantee, $hh_set_group);
+    
+    // Bind parameters for UPDATE (16 parameters now)
+    $updateStmt->bind_param("ssssssssssssssss", $province, $municipality, $first_name, $middle_name, $last_name, $name_extension, $relation_to_hh_head, $sex, $birthday, $age, $member_status, $barangay, $client_status, $hh_set_group, $hh_id, $hh_grantee);
     
     // --- TRANSACTION PROCESSING ---
     $processed = 0;
@@ -154,8 +160,8 @@ if (isset($_FILES['report']) && $_FILES['report']['error'] == UPLOAD_ERR_OK)
         // Read CSV line by line using fgetcsv (more reliable)
         while (($row = fgetcsv($file)) !== false) 
         {
-            // Skip empty rows
-            if ($row === null || count($row) < 16 || empty($row[0])) {
+            // Skip empty rows - now expecting 17 columns
+            if ($row === null || count($row) < 17 || empty($row[0])) {
                 continue;
             }
             
@@ -199,16 +205,17 @@ if (isset($_FILES['report']) && $_FILES['report']['error'] == UPLOAD_ERR_OK)
             $barangay = $row[12] ?? '';
             $client_status = $row[13] ?? '';
             $hh_id = formatHhId($row[14] ?? '');
-            $entry_id = $row[15] ?? '';
+            $hh_grantee = $row[15] ?? '';  // Changed from entry_id to hh_grantee
+            $hh_set_group = $row[16] ?? ''; // New column
 
             // Skip if essential fields are empty
-            if (empty($hh_id) || empty($entry_id)) {
-                error_log("Skipping row - missing hh_id or entry_id");
+            if (empty($hh_id) || empty($hh_grantee)) {
+                error_log("Skipping row - missing hh_id or hh_grantee");
                 continue;
             }
 
             // Check if record exists and execute the appropriate statement
-            if (checkIfExists($hh_id, $entry_id)) {
+            if (checkIfExists($hh_id, $hh_grantee)) {
                 $updateStmt->execute();
             } else {
                 $insertStmt->execute();
@@ -277,7 +284,7 @@ if (isset($_FILES['report']) && $_FILES['report']['error'] == UPLOAD_ERR_OK)
                                 </div>
                                 <div class="d-grid gap-2 col-6 mx-auto">
                                     <button class="btn btn-outline-success mt-2" type="submit">Upload file</button>
-                                    <a href="admin_dashboard.php" class="btn btn-outline-warning">Back</a>
+                                    <a href="admin_dashboard.php" class="btn btn-outline-primary">Back</a>
                                 </div>
                             </form>
                         </div>
