@@ -3,7 +3,7 @@ include("../app/db.php");
 
 // --- CONSTANTS AND SETTINGS ---
 define("COLUMN_HEADER_ROW_INDEX", "1");
-define("BULK_INSERT_SIZE", 100);
+define("BULK_INSERT_SIZE", 1000);
 
 // Set higher limits for large file processing
 ini_set('memory_limit', '2048M');
@@ -43,19 +43,17 @@ function formatHhId($hh_id) {
     return $hh_id;
 }
 
-function checkIfExists($hh_id, $hh_grantee)
+// UPDATED: Check if record exists using entry_id (which should be unique)
+function checkIfExists($entry_id)
 {
     global $conn;
     
-    if (empty($hh_id) || empty($hh_grantee)) return false;
+    if (empty($entry_id)) return false;
     
-    // Format the hh_id before checking
-    $formatted_hh_id = formatHhId($hh_id);
-    
-    $check_if_exists = "SELECT 1 FROM `barcode_data_2` WHERE `hh_id` = ? AND `hh_grantee` = ? LIMIT 1";
+    $check_if_exists = "SELECT 1 FROM `barcode_data_2` WHERE `entry_id` = ? LIMIT 1";
     
     $stmt = mysqli_prepare($conn, $check_if_exists);
-    mysqli_stmt_bind_param($stmt, "ss", $formatted_hh_id, $hh_grantee);
+    mysqli_stmt_bind_param($stmt, "s", $entry_id);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_store_result($stmt);
     
@@ -100,7 +98,7 @@ if (isset($_FILES['report']) && $_FILES['report']['error'] == UPLOAD_ERR_OK)
         "id", "province", "municipality", "first_name", "middle_name", 
         "last_name", "name_extension", "relation_to_hh_head", "sex", 
         "birthday", "age", "member_status", "barangay", "client_status", 
-        "hh_id", "hh_grantee", "hh_set_group"  // Updated: entry_id -> hh_grantee + added hh_set_group
+        "hh_id", "hh_grantee", "hh_set_group", "entry_id"
     ];
     
     // Use fopen/fgetcsv instead of SplFileObject for better reliability
@@ -120,7 +118,7 @@ if (isset($_FILES['report']) && $_FILES['report']['error'] == UPLOAD_ERR_OK)
     
     $csvHeaders = array_map('trim', $csvHeaders);
     
-    // Header validation - now expecting 17 columns
+    // Header validation - now expecting 18 columns (added entry_id)
     if (count($csvHeaders) !== count($expected_headers) || !empty(array_diff($expected_headers, $csvHeaders))) 
     {
         fclose($file);
@@ -132,26 +130,32 @@ if (isset($_FILES['report']) && $_FILES['report']['error'] == UPLOAD_ERR_OK)
     }   
 
     // --- DATABASE PREPARED STATEMENTS ---
-    // Updated INSERT statement with hh_set_group
-    $insertStmt = $conn->prepare("INSERT INTO barcode_data_2 (province, municipality, first_name, middle_name, last_name, name_extension, relation_to_hh_head, sex, birthday, age, member_status, barangay, client_status, hh_id, hh_grantee, hh_set_group) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    // UPDATED: INSERT statement - using entry_id as unique identifier
+    $insertStmt = $conn->prepare("INSERT INTO barcode_data_2 (province, municipality, first_name, middle_name, last_name, name_extension, relation_to_hh_head, sex, birthday, age, member_status, barangay, client_status, hh_id, hh_grantee, hh_set_group, entry_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     
-    // Updated UPDATE statement with hh_set_group and hh_grantee
-    $updateStmt = $conn->prepare("UPDATE barcode_data_2 SET province = ?, municipality = ?, first_name = ?, middle_name = ?, last_name = ?, name_extension = ?, relation_to_hh_head = ?, sex = ?, birthday = ?, age = ?, member_status = ?, barangay = ?, client_status = ?, hh_set_group = ? WHERE hh_id = ? AND hh_grantee = ?");
+    // UPDATED: UPDATE statement - using entry_id as the WHERE condition
+    $updateStmt = $conn->prepare("UPDATE barcode_data_2 SET province = ?, municipality = ?, first_name = ?, middle_name = ?, last_name = ?, name_extension = ?, relation_to_hh_head = ?, sex = ?, birthday = ?, age = ?, member_status = ?, barangay = ?, client_status = ?, hh_id = ?, hh_grantee = ?, hh_set_group = ? WHERE entry_id = ?");
     
     if (!$insertStmt || !$updateStmt) {
         fclose($file);
         die("Error preparing statements: " . $conn->error);
     }
     
-    // Bind parameters for INSERT (16 parameters now)
-    $insertStmt->bind_param("ssssssssssssssss", $province, $municipality, $first_name, $middle_name, $last_name, $name_extension, $relation_to_hh_head, $sex, $birthday, $age, $member_status, $barangay, $client_status, $hh_id, $hh_grantee, $hh_set_group);
+    // Bind parameters for INSERT (17 parameters)
+    $insertStmt->bind_param("sssssssssssssssss", $province, $municipality, $first_name, $middle_name, $last_name, $name_extension, $relation_to_hh_head, $sex, $birthday, $age, $member_status, $barangay, $client_status, $hh_id, $hh_grantee, $hh_set_group, $entry_id);
     
-    // Bind parameters for UPDATE (16 parameters now)
-    $updateStmt->bind_param("ssssssssssssssss", $province, $municipality, $first_name, $middle_name, $last_name, $name_extension, $relation_to_hh_head, $sex, $birthday, $age, $member_status, $barangay, $client_status, $hh_set_group, $hh_id, $hh_grantee);
+    // UPDATED: Bind parameters for UPDATE (17 parameters - entry_id is last for WHERE clause)
+    $updateStmt->bind_param("sssssssssssssssss", $province, $municipality, $first_name, $middle_name, $last_name, $name_extension, $relation_to_hh_head, $sex, $birthday, $age, $member_status, $barangay, $client_status, $hh_id, $hh_grantee, $hh_set_group, $entry_id);
     
     // --- TRANSACTION PROCESSING ---
     $processed = 0;
     $batchCount = 0;
+    $inserted = 0;
+    $updated = 0;
+    $skipped = 0;
+    
+    // Track household statistics for debugging
+    $householdStats = [];
     
     // Start transaction
     $conn->begin_transaction();
@@ -160,14 +164,14 @@ if (isset($_FILES['report']) && $_FILES['report']['error'] == UPLOAD_ERR_OK)
         // Read CSV line by line using fgetcsv (more reliable)
         while (($row = fgetcsv($file)) !== false) 
         {
-            // Skip empty rows - now expecting 17 columns
-            if ($row === null || count($row) < 17 || empty($row[0])) {
+            // Skip empty rows - now expecting 18 columns (added entry_id)
+            if ($row === null || count($row) < 18 || empty($row[0])) {
                 continue;
             }
             
-            // Debug: Show what row we're processing
-            if ($processed < 5) {
-                error_log("Processing row {$processed}: " . implode(', ', array_slice($row, 0, 5)) . "...");
+            // Skip header row if it appears again
+            if (isset($row[0]) && $row[0] === 'id') {
+                continue;
             }
 
             // Assign values to bound parameters
@@ -204,37 +208,74 @@ if (isset($_FILES['report']) && $_FILES['report']['error'] == UPLOAD_ERR_OK)
             $member_status = $row[11] ?? '';
             $barangay = $row[12] ?? '';
             $client_status = $row[13] ?? '';
-            $hh_id = formatHhId($row[14] ?? '');
-            $hh_grantee = $row[15] ?? '';  // Changed from entry_id to hh_grantee
-            $hh_set_group = $row[16] ?? ''; // New column
+            $hh_id_raw = $row[14] ?? '';
+            $hh_grantee = $row[15] ?? '';
+            $hh_set_group = $row[16] ?? '';
+            $entry_id = $row[17] ?? '';  // Get entry_id from CSV
+
+            // Format hh_id
+            $hh_id = formatHhId($hh_id_raw);
 
             // Skip if essential fields are empty
-            if (empty($hh_id) || empty($hh_grantee)) {
-                error_log("Skipping row - missing hh_id or hh_grantee");
+            if (empty($hh_id) || empty($entry_id)) {
+                error_log("Skipping row - missing hh_id or entry_id: hh_id='$hh_id_raw', entry_id='$entry_id'");
+                $skipped++;
                 continue;
             }
 
-            // Check if record exists and execute the appropriate statement
-            if (checkIfExists($hh_id, $hh_grantee)) {
-                $updateStmt->execute();
+            // Track household statistics for debugging
+            if (!isset($householdStats[$hh_id])) {
+                $householdStats[$hh_id] = 0;
+            }
+            $householdStats[$hh_id]++;
+
+            // DEBUG: Log processing details
+            if ($processed < 10) {
+                error_log("Processing: HH_ID=$hh_id, Entry_ID=$entry_id, Name=$first_name $last_name, Grantee=$hh_grantee");
+            }
+
+            // UPDATED: Check if record exists using entry_id (which should be unique)
+            $exists = checkIfExists($entry_id);
+            
+            if ($exists) {
+                // Update existing record using entry_id
+                $result = $updateStmt->execute();
+                if ($result) {
+                    $updated++;
+                    error_log("UPDATED: Entry_ID=$entry_id, HH_ID=$hh_id");
+                } else {
+                    error_log("Update failed for entry_id: $entry_id - " . $updateStmt->error);
+                }
             } else {
-                $insertStmt->execute();
+                // Insert new record with entry_id
+                $result = $insertStmt->execute();
+                if ($result) {
+                    $inserted++;
+                    error_log("INSERTED: Entry_ID=$entry_id, HH_ID=$hh_id");
+                } else {
+                    error_log("Insert failed for entry_id: $entry_id - " . $insertStmt->error);
+                }
             }
             
             $processed++;
             $batchCount++;
             
+            // Debug output every 50 records
+            if ($processed % 50 === 0) {
+                error_log("Processed $processed records (Inserted: $inserted, Updated: $updated, Skipped: $skipped)");
+                echo "Processed $processed records...<br>";
+                ob_flush();
+                flush();
+            }
+            
             // Commit in batches for better performance
             if ($batchCount >= BULK_INSERT_SIZE) {
                 $conn->commit();
-                echo "Processed $processed records...<br>";
+                echo "Committed batch of $batchCount records...<br>";
                 ob_flush();
                 flush();
                 $conn->begin_transaction();
                 $batchCount = 0;
-                
-                // Add a small delay to prevent server overload
-                usleep(50000); // 50ms delay
             }
         }
         
@@ -242,13 +283,36 @@ if (isset($_FILES['report']) && $_FILES['report']['error'] == UPLOAD_ERR_OK)
         $conn->commit();
         fclose($file);
         
-        echo "<h3>Success!</h3> <p>Processed a total of $processed records.</p>";
-        echo "<script>setTimeout(function(){ window.location.href = 'admin_dashboard.php'; }, 3000);</script>";
+        // Final statistics
+        echo "<h3>Processing Complete!</h3>";
+        echo "<div class='alert alert-info'>";
+        echo "<p><strong>Total records processed:</strong> $processed</p>";
+        echo "<p><strong>Records inserted:</strong> $inserted</p>";
+        echo "<p><strong>Records updated:</strong> $updated</p>";
+        echo "<p><strong>Records skipped:</strong> $skipped</p>";
+        echo "<p><strong>Unique households processed:</strong> " . count($householdStats) . "</p>";
+        echo "</div>";
+        
+        // Show household distribution for debugging
+        if (count($householdStats) > 0) {
+            echo "<h4>Household Member Distribution:</h4>";
+            echo "<div style='max-height: 300px; overflow-y: auto;'>";
+            foreach ($householdStats as $hh_id => $count) {
+                echo "<p>Household <strong>$hh_id</strong>: $count members</p>";
+            }
+            echo "</div>";
+        }
+        
+        echo "<script>setTimeout(function(){ window.location.href = 'admin_dashboard.php'; }, 10000);</script>";
         
     } catch (Exception $e) {
         $conn->rollback();
         fclose($file);
-        echo "An error occurred: " . htmlspecialchars($e->getMessage());
+        echo "<div class='alert alert-danger'>";
+        echo "<h3>An error occurred during processing:</h3>";
+        echo "<p>" . htmlspecialchars($e->getMessage()) . "</p>";
+        echo "<p>Processed $processed records before error.</p>";
+        echo "</div>";
         error_log("Processing error: " . $e->getMessage());
     }
     
@@ -281,6 +345,9 @@ if (isset($_FILES['report']) && $_FILES['report']['error'] == UPLOAD_ERR_OK)
                                 <div class="mb-3">
                                     <label for="report" class="form-label">Select CSV File</label>
                                     <input class="form-control" type="file" name="report" id="report" accept=".csv" required>
+                                    <div class="form-text">
+                                        <strong>CSV must contain these columns:</strong> id, province, municipality, first_name, middle_name, last_name, name_extension, relation_to_hh_head, sex, birthday, age, member_status, barangay, client_status, hh_id, hh_grantee, hh_set_group, entry_id
+                                    </div>
                                 </div>
                                 <div class="d-grid gap-2 col-6 mx-auto">
                                     <button class="btn btn-outline-success mt-2" type="submit">Upload file</button>

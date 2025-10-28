@@ -102,7 +102,7 @@
             </div>
         </div>
     </div>
-
+    
     <!-- Footer Section -->
     <footer class="footer">
         <div class="container">
@@ -111,7 +111,7 @@
                     Mher Jason C. Cabreros, CpE
                 </div>
                 <div class="position-info">
-                    Computer Maintenance Technologist II, PPPPPMD DSWD FO XI
+                    Computer Maintenance Technologist II, PPPPMD DSWD FO XI
                 </div>
                 <div class="rights-reserved mt-2">
                     &copy; 2024 Beneficiary Verification System. All Rights Reserved.
