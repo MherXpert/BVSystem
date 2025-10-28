@@ -136,7 +136,7 @@ if (isset($_GET['hh_id'])) {
 
         <!-- Logout Button and Modal -->
         <div class="container mt-3">
-            <a href="admin_dashboard.php" class="btn btn-warning">Back</a>
+            <a href="admin_dashboard.php" class="btn btn-outline-primary">Back</a>
         </div>
         
     <!-- Bootstrap JS -->
